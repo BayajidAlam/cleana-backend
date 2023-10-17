@@ -4,7 +4,7 @@ import { IPaginationOptions } from "../../constants/pagination";
 import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IGenericResponse } from "../../interface/common";
 
-
+// post blog 
 export const postBlogToDb = async (data: BlogPost): Promise<BlogPost> => {
   const result = prisma.blogPost.create({
     data,
@@ -12,6 +12,7 @@ export const postBlogToDb = async (data: BlogPost): Promise<BlogPost> => {
   return result;
 };
 
+// post faq 
 export const postFAQToDb = async (data: Faq): Promise<Faq> => {
   const result = prisma.faq.create({
     data,
@@ -19,7 +20,7 @@ export const postFAQToDb = async (data: Faq): Promise<Faq> => {
   return result;
 };
 
-// get all post 
+// get all post
 export const getAllBlogFromDB = async (
   options: IPaginationOptions
 ): Promise<IGenericResponse<BlogPost[]>> => {
@@ -46,7 +47,7 @@ export const getAllBlogFromDB = async (
   };
 };
 
-// get all post 
+// get all post
 export const getAllFaqFromDB = async (
   options: IPaginationOptions
 ): Promise<IGenericResponse<Faq[]>> => {
@@ -73,65 +74,82 @@ export const getAllFaqFromDB = async (
   };
 };
 
+// get single blog
+export const getSingleBlogService = async (id: string) => {
+  const service = await prisma.blogPost.findUnique({
+    where: {
+      id,
+    },
+  });
 
-// export const getSingleServiceByCategoryIDFromDB = async (id: string) => {
-//   const result = await prisma.services.findMany({
-//     where: {
-//       categoryId: id,
-//     },
-//   });
-//   return result;
-// };
+  if (!service) {
+    return null;
+  }
 
-// export const updateServiceFromDB = async (
-//   id: string,
-//   payload: Partial<Services>
-// ) => {
-//   const result = await prisma.services.update({
-//     where: {
-//       id,
-//     },
-//     data: payload,
-//     include: {
-//       category: true,
-//     },
-//   });
-//   return result;
-// };
+  return service;
+};
 
-// export const deleteServiceFromDB = async (id: string) => {
-//   const deleteReview = await prisma.reviewAndRating.deleteMany({
-//     where: {
-//       servicesId: id,
-//     },
-//   });
+// get single service
+export const getSingleFaqService = async (id: string) => {
 
-//   const deleteBooking = await prisma.booking.deleteMany({
-//     where: {
-//       servicesId: id,
-//     },
-//   });
-//   if (!!deleteReview || !!deleteBooking) {
-//     const result = await prisma.services.delete({
-//       where: {
-//         id,
-//       },
-//     });
-//     return result;
-//   }
-// };
-// export const getSingleServiceService = async (id: string) => {
-//   // Use Prisma's findUnique to retrieve a service by its id
-//   const service = await prisma.services.findUnique({
-//     where: {
-//       id,
-//     },
-//   });
+  const service = await prisma.faq.findUnique({
+    where: {
+      id,
+    },
+  });
 
-//   if (!service) {
-//     return null;
-//   }
+  if (!service) {
+    return null;
+  }
 
-//   // If the service exists, you can return it or perform any other actions
-//   return service;
-// };
+  return service;
+};
+
+// update blog in db
+export const updateBlogInDB = async (
+  id: string,
+  payload: Partial<BlogPost>
+) => {
+  const result = await prisma.blogPost.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
+// update faq in db
+export const updateBFaqInDB = async (
+  id: string,
+  payload: Partial<Faq>
+) => {
+  const result = await prisma.faq.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
+// delete blog 
+export const deleteBlogFromDB = async (id: string) => {
+  const result = await prisma.blogPost.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
+// delete blog 
+export const deleteFaqFromDB = async (id: string) => {
+  const result = await prisma.faq.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
