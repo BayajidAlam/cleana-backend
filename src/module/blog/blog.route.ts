@@ -1,12 +1,14 @@
 import express from "express";
-import { createBlog } from "./blog.controller";
+import { createBlog, createFaq, getAllBlogController, getAllFaqController } from "./blog.controller";
 
 
 
 const router = express.Router();
 
 router.post("/blog/create-blog", createBlog);
-// router.get("/services", getAllServiceController);
+router.post("/blog/create-faq", createFaq);
+router.get("/blogs", getAllBlogController);
+router.get("/faqs", getAllFaqController);
 // router.patch("/services/:id", updateServiceController);
 // router.get("/services/:id", getSingleServiceController);
 // router.delete("/services/:id", deleteServiceController);

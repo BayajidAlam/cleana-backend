@@ -31,6 +31,7 @@ export const postService = catchAsync(async (req: Request, res: Response) => {
 
 export const getAllServiceController = catchAsync(
   async (req: Request, res: Response) => {
+    
     const filters = pick(req.query, servicesFilterableFields);
     const options = pick(req.query, paginationFields);
     const result = await getAllServiceFromDBService(filters, options);

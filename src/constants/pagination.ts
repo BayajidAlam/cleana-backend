@@ -3,8 +3,6 @@ export const paginationFields = [
   "limit",
   "sortBy",
   "sortOrder",
-  "minPrice",
-  "maxPrice",
 ];
 
 export type IPaginationOptions = {
