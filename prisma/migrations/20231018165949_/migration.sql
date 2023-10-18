@@ -5,7 +5,7 @@ CREATE TYPE "Role" AS ENUM ('superadmin', 'admin', 'customer');
 CREATE TYPE "Stock" AS ENUM ('inStock', 'outOfStock');
 
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('pending', 'delivered', 'canceled', 'accepted', 'rejected');
+CREATE TYPE "Status" AS ENUM ('requested', 'pending', 'delivered', 'canceled', 'accepted', 'rejected');
 
 -- CreateEnum
 CREATE TYPE "State" AS ENUM ('active', 'inActive');
@@ -53,18 +53,6 @@ CREATE TABLE "services" (
 );
 
 -- CreateTable
-CREATE TABLE "booking" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "status" "Status" NOT NULL DEFAULT 'pending',
-    "servicesId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "booking_schedult" TIMESTAMP(3),
-
-    CONSTRAINT "booking_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "myCart" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -75,6 +63,18 @@ CREATE TABLE "myCart" (
 );
 
 -- CreateTable
+CREATE TABLE "booking" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "status" "Status" NOT NULL DEFAULT 'requested',
+    "servicesId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "booking_schedult" TIMESTAMP(3),
+
+    CONSTRAINT "booking_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "reviews" (
     "id" TEXT NOT NULL,
     "review" TEXT NOT NULL,
@@ -82,6 +82,26 @@ CREATE TABLE "reviews" (
     "servicesId" TEXT NOT NULL,
 
     CONSTRAINT "reviews_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BlogPost" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "BlogPost_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Faq" (
+    "id" TEXT NOT NULL,
+    "question" TEXT NOT NULL,
+    "ans" TEXT NOT NULL,
+
+    CONSTRAINT "Faq_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -100,16 +120,16 @@ CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 ALTER TABLE "services" ADD CONSTRAINT "services_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "booking" ADD CONSTRAINT "booking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "booking" ADD CONSTRAINT "booking_servicesId_fkey" FOREIGN KEY ("servicesId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "myCart" ADD CONSTRAINT "myCart_servicesId_fkey" FOREIGN KEY ("servicesId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "myCart" ADD CONSTRAINT "myCart_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "booking" ADD CONSTRAINT "booking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "booking" ADD CONSTRAINT "booking_servicesId_fkey" FOREIGN KEY ("servicesId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_servicesId_fkey" FOREIGN KEY ("servicesId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

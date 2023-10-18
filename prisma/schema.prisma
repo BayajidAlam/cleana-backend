@@ -4,9 +4,10 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URL")
 }
 
+// models 
 model User {
   id         String    @id @default(uuid())
   name       String
@@ -50,19 +51,6 @@ model Services {
   @@map("services")
 }
 
-model Booking {
-  id               String    @id @default(uuid())
-  user             User      @relation(fields: [userId], references: [id])
-  userId           String
-  status           Status    @default(pending)
-  service          Services  @relation(fields: [servicesId], references: [id])
-  servicesId       String
-  createdAt        DateTime  @default(now())
-  booking_schedult DateTime?
-
-  @@map("booking")
-}
-
 model MyCart {
   id         String   @id @default(uuid())
   userId     String
@@ -72,6 +60,19 @@ model MyCart {
   User       User     @relation(fields: [userId], references: [id])
 
   @@map("myCart")
+}
+
+model Booking {
+  id               String    @id @default(uuid())
+  user             User      @relation(fields: [userId], references: [id])
+  userId           String
+  status           Status    @default(requested)
+  service          Services  @relation(fields: [servicesId], references: [id])
+  servicesId       String
+  createdAt        DateTime  @default(now())
+  booking_schedult DateTime?
+
+  @@map("booking")
 }
 
 model ReviewAndRating {
@@ -118,6 +119,7 @@ enum Stock {
 }
 
 enum Status {
+  requested
   pending
   delivered
   canceled

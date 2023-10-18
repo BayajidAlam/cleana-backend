@@ -10,11 +10,7 @@ import {
   getAllBookingsFromDB,
   updateBookingFromDB,
 } from "./booking.service";
-import {
-  getSingleServiceByCategoryIDFromDB,
-  deleteServiceFromDB,
-  updateServiceFromDB,
-} from "../services/services.service";
+
 export const addBookingController = catchAsync(
   async (req: Request, res: Response) => {
     const result = await addBookingToDB(req.body);

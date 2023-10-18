@@ -25,7 +25,6 @@ export const addBookingToDB = async (
         user: true,
       },
     });
-    console.log(result);
 
     return result;
   } catch (error) {
@@ -57,8 +56,7 @@ export const getAllBookingsFromDB = async () => {
 };
 
 export const updateBookingFromDB = async (id: string, payload: any) => {
-  console.log(id, "id");
-  console.log(payload, "payload");
+  
   const result = await prisma.booking.update({
     where: {
       id,
@@ -74,7 +72,7 @@ export const updateBookingFromDB = async (id: string, payload: any) => {
 };
 
 export const deleteBookingFromDB = async (id: string) => {
-  console.log(id);
+
   const result = await prisma.booking.delete({
     where: {
       id,
