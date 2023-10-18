@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import sendResponse from "../../shared/sendResponse";
 import catchAsync from "../../shared/catchAsync";
 import {
+  deleteSingleUserFromDb,
   getAllUsersFromDB,
   getSingleUserById,
   loginUserToDB,
@@ -16,7 +17,7 @@ export const signUpUserController: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const data = req.body;
     const result = await signUpUserTODB(data);
-    
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -79,8 +80,8 @@ export const updatgeRoleUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const data = req.body;
-  
-    const result = await updateUserRole(id,data);
+
+    const result = await updateUserRole(id, data);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -88,5 +89,28 @@ export const updatgeRoleUser: RequestHandler = catchAsync(
       message: "Users fetched successfully !",
       data: result,
     });
+  }
+);
+
+export const deleteSingleUser: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const result = await deleteSingleUserFromDb(id);
+    if (result) {
+      return sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Users deleted successfully !",
+        data: result,
+      });
+    } else {
+      return sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: false,
+        message: "User Not found !",
+        data: "",
+      });
+    }
   }
 );

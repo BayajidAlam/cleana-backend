@@ -49,7 +49,7 @@ export const loginUserToDB = async (payload: User) => {
 };
 
 export const getSingleUserById = async (id: any) => {
-  const result = await prisma.user.findMany({
+  const result = await prisma.user.findUnique({
     where: {
       id: id,
     },
@@ -58,7 +58,6 @@ export const getSingleUserById = async (id: any) => {
 };
 
 export const updateUserRole = async (id: any, payload: object) => {
-  console.log(id, payload);
   const result = await prisma.user.update({
     where: { id },
     data: payload,
@@ -70,7 +69,6 @@ export const getAllUsersFromDB = async (
   filters: any,
   options: IPaginationOptions
 ) => {
-  
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
   console.log(searchTerm);
@@ -120,4 +118,23 @@ export const getAllUsersFromDB = async (
     },
     data: result,
   };
+};
+
+export const deleteSingleUserFromDb = async (id: string) => {
+  const result = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  
+  if (result) {
+    const deleteResult = await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    return deleteResult;
+  } else {
+    return null;
+  }
 };
