@@ -60,10 +60,9 @@ export const getAllServiceFromDBService = async (
       },
       take: limit,
       skip,
-      orderBy:
-        options.sortBy && options.sortOrder
-          ? { [options.sortBy]: options.sortOrder }
-          : {},
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     const total: number = await prisma.services.count({
       where: {
@@ -88,10 +87,9 @@ export const getAllServiceFromDBService = async (
       },
       take: limit,
       skip,
-      orderBy:
-        options.sortBy && options.sortOrder
-          ? { [options.sortBy]: options.sortOrder }
-          : {},
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     const total: number = await prisma.services.count({
       where: whereConditions,
@@ -105,6 +103,18 @@ export const getAllServiceFromDBService = async (
       data: result,
     };
   }
+};
+
+export const getAllNewServiceFromDB = async () => {
+  const result = await prisma.services.findMany({
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return result;
 };
 
 export const getSingleServiceByCategoryIDFromDB = async (id: string) => {

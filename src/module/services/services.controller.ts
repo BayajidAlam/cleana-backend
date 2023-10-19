@@ -6,6 +6,7 @@ import httpStatus from "http-status";
 import {
   addServiceToDB,
   deleteServiceFromDB,
+  getAllNewServiceFromDB,
   getAllServiceFromDBService,
   getSingleServiceByCategoryIDFromDB,
   getSingleServiceService,
@@ -29,6 +30,7 @@ export const postService = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
 export const getAllServiceController = catchAsync(
   async (req: Request, res: Response) => {
     
@@ -44,6 +46,21 @@ export const getAllServiceController = catchAsync(
     });
   }
 );
+
+export const getAllNewServiceController = catchAsync(
+  async (req: Request, res: Response) => {
+
+    const result = await getAllNewServiceFromDB();
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Services fetched successfully",
+      data: result,
+    });
+  }
+);
+
 export const getServiceByCategoryIdController = catchAsync(
   async (req: Request, res: Response) => {
     const categoryId = req.params.categoryId;

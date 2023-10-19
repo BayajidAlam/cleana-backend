@@ -9,8 +9,8 @@ import {
 const router = express.Router();
 
 router.post("/my-feedback", addFeedbackController);
-router.post("/my-review", addReviewController);
 router.get("/all-feedbacks", getAllFeedbackController);
+router.post("/my-review", addReviewController);
 router.get("/all-review", getAllReviewController);
 
 export const feedbackRoutes = router;

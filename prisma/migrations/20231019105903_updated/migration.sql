@@ -107,7 +107,7 @@ CREATE TABLE "Faq" (
 -- CreateTable
 CREATE TABLE "feedback" (
     "id" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "feedback" TEXT NOT NULL,
 
     CONSTRAINT "feedback_pkey" PRIMARY KEY ("id")
@@ -133,3 +133,6 @@ ALTER TABLE "booking" ADD CONSTRAINT "booking_servicesId_fkey" FOREIGN KEY ("ser
 
 -- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_servicesId_fkey" FOREIGN KEY ("servicesId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "feedback" ADD CONSTRAINT "feedback_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -17,9 +17,18 @@ export const addReviewToDB = async (
 };
 
 export const getAllFeedbackFromDB = async () => {
-  const result = prisma.feedback.findMany({});
+  const result = await prisma.feedback.findMany({
+    include: {
+      user: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
   return result;
 };
+
+
 export const getAllReviewFromDB = async () => {
   const result = prisma.reviewAndRating.findMany({
     include: {
