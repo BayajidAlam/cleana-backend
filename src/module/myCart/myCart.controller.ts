@@ -7,6 +7,7 @@ import { addCartToDB, deleteCartFromDB, getMyCartByUserIdFromDB } from "./myCart
 export const addTOCartController = catchAsync(
   async (req: Request, res: Response) => {
     const result = await addCartToDB(req.body);
+    console.log(req.body);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

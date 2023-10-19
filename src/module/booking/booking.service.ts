@@ -1,7 +1,6 @@
 import { Booking, ReviewAndRating, Services } from "@prisma/client";
 import prisma from "../../shared/prisma";
 
-
 export const addBookingToDB = async (
   data: Booking
 ): Promise<Booking | null> => {
@@ -34,6 +33,7 @@ export const addBookingToDB = async (
 };
 
 export const getBookingByUseridFromDB = async (id: string) => {
+  console.log(id, "id");
   const result = await prisma.booking.findMany({
     where: {
       userId: id,
@@ -56,7 +56,6 @@ export const getAllBookingsFromDB = async () => {
 };
 
 export const updateBookingFromDB = async (id: string, payload: any) => {
-  
   const result = await prisma.booking.update({
     where: {
       id,
@@ -72,7 +71,6 @@ export const updateBookingFromDB = async (id: string, payload: any) => {
 };
 
 export const deleteBookingFromDB = async (id: string) => {
-
   const result = await prisma.booking.delete({
     where: {
       id,
