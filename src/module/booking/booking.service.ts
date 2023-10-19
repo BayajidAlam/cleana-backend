@@ -42,6 +42,9 @@ export const getBookingByUseridFromDB = async (id: string) => {
       service: true,
       user: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return result;
 };
@@ -50,6 +53,9 @@ export const getAllBookingsFromDB = async () => {
     include: {
       service: true,
       user: true,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
   return result;

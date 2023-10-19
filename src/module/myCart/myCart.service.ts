@@ -22,6 +22,9 @@ export const getMyCartByUserIdFromDB = async (id: string) => {
       service: true,
       User: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return result;

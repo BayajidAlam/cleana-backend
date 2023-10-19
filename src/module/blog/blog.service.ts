@@ -94,6 +94,7 @@ export const getSingleFaqService = async (id: string) => {
     where: {
       id,
     },
+    
   });
 
   if (!service) {

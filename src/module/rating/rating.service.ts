@@ -21,6 +21,9 @@ export const getAllReviewsFromDBService = async () => {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return result;
 };
