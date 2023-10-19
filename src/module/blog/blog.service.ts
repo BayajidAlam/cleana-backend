@@ -29,10 +29,9 @@ export const getAllBlogFromDB = async (
   const result = await prisma.blogPost.findMany({
     take: limit,
     skip,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? { [options.sortBy]: options.sortOrder }
-        : {},
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   const total: number = await prisma.blogPost.count();
@@ -56,10 +55,9 @@ export const getAllFaqFromDB = async (
   const result = await prisma.faq.findMany({
     take: limit,
     skip,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? { [options.sortBy]: options.sortOrder }
-        : {},
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   const total: number = await prisma.faq.count();
