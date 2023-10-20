@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BlogAndFAQService = void 0;
+const express_1 = __importDefault(require("express"));
+const blog_controller_1 = require("./blog.controller");
+const router = express_1.default.Router();
+router.post("/blog/create-blog", blog_controller_1.createBlog);
+router.post("/blog/create-faq", blog_controller_1.createFaq);
+router.get("/blogs", blog_controller_1.getAllBlogController);
+router.get("/faqs", blog_controller_1.getAllFaqController);
+router.get("/blog/:id", blog_controller_1.getSingleBlogController);
+router.get("/faq/:id", blog_controller_1.getSingleFaqController);
+router.patch("/blog/:id", blog_controller_1.updateBlogController);
+router.patch("/faq/:id", blog_controller_1.updateFaqController);
+router.delete("/blog/:id", blog_controller_1.deleteBlogController);
+router.delete("/faq/:id", blog_controller_1.deleteFaqController);
+// router.get("/services/:categoryId", getServiceByCategoryIdController);
+exports.BlogAndFAQService = router;
