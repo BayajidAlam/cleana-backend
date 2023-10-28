@@ -13,7 +13,7 @@ import {
 import pick from "../../shared/pick";
 import { userFilterAbleField } from "./user.constant";
 
-export const signUpUserController: RequestHandler = catchAsync(
+const signUpUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const data = req.body;
     const result = await signUpUserTODB(data);
@@ -27,7 +27,7 @@ export const signUpUserController: RequestHandler = catchAsync(
   }
 );
 
-export const loginUser = catchAsync(async (req: Request, res: Response) => {
+const loginUser = catchAsync(async (req: Request, res: Response) => {
   console.log(req.headers.authorization, "header");
   const { ...loginData } = req.body;
   const result = await loginUserToDB(loginData);
@@ -44,7 +44,7 @@ export const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const getAllUsersController: RequestHandler = catchAsync(
+const getAllUsers: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, userFilterAbleField);
 
@@ -61,7 +61,7 @@ export const getAllUsersController: RequestHandler = catchAsync(
   }
 );
 
-export const getSingleUser: RequestHandler = catchAsync(
+const getSingleUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
 
@@ -76,7 +76,7 @@ export const getSingleUser: RequestHandler = catchAsync(
   }
 );
 
-export const updatgeRoleUser: RequestHandler = catchAsync(
+const updateRoledUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const data = req.body;
@@ -92,7 +92,7 @@ export const updatgeRoleUser: RequestHandler = catchAsync(
   }
 );
 
-export const deleteSingleUser: RequestHandler = catchAsync(
+const deleteSingleUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
 
@@ -114,3 +114,13 @@ export const deleteSingleUser: RequestHandler = catchAsync(
     }
   }
 );
+
+
+export const UserController = {
+  signUpUser,
+  loginUser,
+  getAllUsers,
+  getSingleUser,
+  updateRoledUser,
+  deleteSingleUser
+}

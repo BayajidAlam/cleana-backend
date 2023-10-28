@@ -1,19 +1,11 @@
 import express from "express";
-import {
-  signUpUserController,
-  getAllUsersController,
-  loginUser,
-  getSingleUser,
-  updatgeRoleUser,
-  deleteSingleUser,
-} from "./user.controller";
+import { UserController } from "./user.controller";
 
 const router = express.Router();
 
-router.patch("/users/:id",updatgeRoleUser);
-router.post("/auth/signup", signUpUserController);
-router.post("/auth/signin", loginUser);
-router.get("/users", getAllUsersController);
-router.get("/users/:id",getSingleUser);
-router.delete("/user/:id",deleteSingleUser);
+router.patch("/:id", UserController.updateRoledUser);
+router.get("/", UserController.getAllUsers);
+router.get("/:id", UserController.getSingleUser);
+router.delete("/:id", UserController.deleteSingleUser);
+
 export const userRoutes = router;

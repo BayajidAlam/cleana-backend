@@ -7,13 +7,18 @@ import { cartServices } from "../module/myCart/myCart.route";
 import { feedbackRoutes } from "../module/feedback/feedback.route";
 import { serviceRoutes } from "../module/services/services.route";
 import { BlogAndFAQService } from "../module/blog/blog.route";
+import { authRoutes } from "../module/auth/auth.route";
 
 const router = express.Router();
 
 const moduleRoutes = [
   {
-    path: "/",
+    path: "/users",
     route: userRoutes,
+  },
+  {
+    path: "/auth",
+    route: authRoutes,
   },
   {
     path: "/",
