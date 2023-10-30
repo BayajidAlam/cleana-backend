@@ -2,7 +2,7 @@ import { JwtPayload, Secret } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import jwtDecode from "jwt-decode";
 
-export const createToken = (
+const createToken = (
   payload: Record<string, unknown>,
   secret: Secret,
   expireTime: string
@@ -12,10 +12,16 @@ export const createToken = (
   });
 };
 
-export const verifyToken = (token: string, secret: Secret): JwtPayload => {
+const verifyToken = (token: string, secret: Secret): JwtPayload => {
   return jwt.verify(token, secret) as JwtPayload;
 };
 
-export const decodedToken = (token: string) => {
+const decodedToken = (token: string) => {
   return jwtDecode(token);
+};
+
+export const jwtHelpers = {
+  createToken,
+  verifyToken,
+  decodedToken
 };

@@ -2,8 +2,8 @@ import { User } from "@prisma/client";
 import httpStatus from "http-status";
 import { Secret } from "jsonwebtoken";
 import prisma from "../../../shared/prisma";
-import { createToken } from "../../../helpers/jwtHelpers";
 import config from "../../../config";
+import { jwtHelpers } from "../../../helpers/jwtHelpers";
 
 const signUpUser = async (data: User): Promise<User> => {
   const result = await prisma.user.create({
@@ -26,13 +26,13 @@ const loginUser = async (payload: User) => {
     httpStatus.NOT_FOUND, "User does not exist";
   } else {
     const { id: userId, role } = isUserExist;
-    const accessToken: any | undefined = createToken(
+    const accessToken: any | undefined = jwtHelpers.createToken(
       { userId, role },
       config.jwt.access_secret as Secret,
       config.jwt.access_expires_in as string
     );
 
-    const refreshToken: any | undefined = createToken(
+    const refreshToken: any | undefined = jwtHelpers.createToken(
       { userId, role },
       config.jwt.refresh_secret as Secret,
       config.jwt.refresh_expires_in as string
