@@ -2,17 +2,13 @@ import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import httpStatus from "http-status";
 import sendResponse from "../../shared/sendResponse";
-import {
-  addBookingToDB,
-  getBookingByUseridFromDB,
-  deleteBookingFromDB,
-  getAllBookingsFromDB,
-  updateBookingFromDB,
-} from "./booking.service";
+import { BookingService } from "./booking.service";
 
-export const addBookingController = catchAsync(
+
+const addBooking = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await addBookingToDB(req.body);
+
+    const result = await BookingService.addBooking(req.body);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -22,10 +18,12 @@ export const addBookingController = catchAsync(
   }
 );
 
-export const getBookingByUserIdController = catchAsync(
+const getBookingByUserId = catchAsync(
   async (req: Request, res: Response) => {
+
     const userId = req.params.userId;
-    const result = await getBookingByUseridFromDB(userId);
+
+    const result = await BookingService.getBookingByUserId(userId);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -34,9 +32,11 @@ export const getBookingByUserIdController = catchAsync(
     });
   }
 );
-export const getAllBookingController = catchAsync(
+
+const getAllBooking = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await getAllBookingsFromDB();
+
+    const result = await BookingService.getAllBooking();
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -46,11 +46,13 @@ export const getAllBookingController = catchAsync(
   }
 );
 
-export const updateBookingController = catchAsync(
+const updateBooking = catchAsync(
   async (req: Request, res: Response) => {
+
     const id = req.params.id;
     const payload = req.body;
-    const result = await updateBookingFromDB(id, payload);
+
+    const result = await BookingService.updateBooking(id, payload);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -60,11 +62,12 @@ export const updateBookingController = catchAsync(
   }
 );
 
-export const deleteBookingController = catchAsync(
+const deleteBooking = catchAsync(
   async (req: Request, res: Response) => {
+    
     const userId = req.params.userId;
 
-    const result = await deleteBookingFromDB(userId);
+    const result = await BookingService.deleteBooking(userId);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -73,3 +76,12 @@ export const deleteBookingController = catchAsync(
     });
   }
 );
+
+
+export const BookingController = {
+  addBooking,
+  getBookingByUserId,
+  getAllBooking,
+  updateBooking,
+  deleteBooking
+}

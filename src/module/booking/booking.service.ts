@@ -1,13 +1,12 @@
 import { Booking, ReviewAndRating, Services } from "@prisma/client";
 import prisma from "../../shared/prisma";
 
-export const addBookingToDB = async (
+const addBooking = async (
   data: Booking
 ): Promise<Booking | null> => {
   try {
     const { userId, servicesId, status } = data;
 
-    // Check if the service with the specified servicesId exists
     const service = await prisma.services.findUnique({
       where: { id: servicesId },
     });
@@ -32,8 +31,8 @@ export const addBookingToDB = async (
   }
 };
 
-export const getBookingByUseridFromDB = async (id: string) => {
-  console.log(id, "id");
+const getBookingByUserId = async (id: string) => {
+  
   const result = await prisma.booking.findMany({
     where: {
       userId: id,
@@ -48,7 +47,8 @@ export const getBookingByUseridFromDB = async (id: string) => {
   });
   return result;
 };
-export const getAllBookingsFromDB = async () => {
+const getAllBooking = async () => {
+
   const result = await prisma.booking.findMany({
     include: {
       service: true,
@@ -61,7 +61,8 @@ export const getAllBookingsFromDB = async () => {
   return result;
 };
 
-export const updateBookingFromDB = async (id: string, payload: any) => {
+const updateBooking = async (id: string, payload: any) => {
+
   const result = await prisma.booking.update({
     where: {
       id,
@@ -76,11 +77,20 @@ export const updateBookingFromDB = async (id: string, payload: any) => {
   return result;
 };
 
-export const deleteBookingFromDB = async (id: string) => {
+const deleteBooking = async (id: string) => {
+
   const result = await prisma.booking.delete({
     where: {
       id,
     },
   });
   return result;
+};
+
+export const BookingService = {
+  addBooking,
+  getBookingByUserId,
+  getAllBooking,
+  updateBooking,
+  deleteBooking,
 };

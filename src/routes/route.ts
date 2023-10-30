@@ -33,7 +33,7 @@ const moduleRoutes = [
     route: ratingRoutes,
   },
   {
-    path: "/",
+    path: "/bookings",
     route: bookingRoutes,
   },
   {
