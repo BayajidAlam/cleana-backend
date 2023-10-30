@@ -1,14 +1,12 @@
 import express from "express";
+import { FaqController } from "./faq.controller";
 
 const router = express.Router();
 
-router.post("/blog/create-faq", createFaq);
-router.get("/faqs", getAllFaqController);
-router.get("/faq/:id", getSingleFaqController);
-router.patch("/faq/:id", updateFaqController);
-router.delete("/faq/:id", deleteFaqController);
+router.post("/create-faq", FaqController.createFaq);
+router.get("/", FaqController.getAllFaq);
+router.get("/:id", FaqController.getSingleFaq);
+router.patch("/:id", FaqController.updateFaq);
+router.delete("/:id", FaqController.deleteFaq);
 
-
-// router.get("/services/:categoryId", getServiceByCategoryIdController);
-
-export const BlogAndFAQService = router;
+export const FaqRoutes = router;

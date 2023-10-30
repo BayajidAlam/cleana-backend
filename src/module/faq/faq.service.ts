@@ -1,12 +1,12 @@
-
 import { BlogPost, Faq } from "@prisma/client";
 import prisma from "../../shared/prisma";
 import { IPaginationOptions } from "../../constants/pagination";
 import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IGenericResponse } from "../../interface/common";
 
-// post faq 
-export const postFAQToDb = async (data: Faq): Promise<Faq> => {
+// post faq
+const createFaq = async (data: Faq): Promise<Faq> => {
+
   const result = prisma.faq.create({
     data,
   });
@@ -14,7 +14,7 @@ export const postFAQToDb = async (data: Faq): Promise<Faq> => {
 };
 
 // get all faq
-export const getAllFaqFromDB = async (
+const getAllFaq = async (
   options: IPaginationOptions
 ): Promise<IGenericResponse<Faq[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
@@ -40,13 +40,11 @@ export const getAllFaqFromDB = async (
 };
 
 // get single service
-export const getSingleFaqService = async (id: string) => {
-
+const getSingleFaq = async (id: string) => {
   const service = await prisma.faq.findUnique({
     where: {
       id,
     },
-    
   });
 
   if (!service) {
@@ -57,10 +55,7 @@ export const getSingleFaqService = async (id: string) => {
 };
 
 // update faq in db
-export const updateBFaqInDB = async (
-  id: string,
-  payload: Partial<Faq>
-) => {
+const updateFaq = async (id: string, payload: Partial<Faq>) => {
   const result = await prisma.faq.update({
     where: {
       id,
@@ -70,8 +65,8 @@ export const updateBFaqInDB = async (
   return result;
 };
 
-// delete blog 
-export const deleteFaqFromDB = async (id: string) => {
+// delete blog
+const deleteFaq = async (id: string) => {
   const result = await prisma.faq.delete({
     where: {
       id,
@@ -80,3 +75,10 @@ export const deleteFaqFromDB = async (id: string) => {
   return result;
 };
 
+export const FaqService = {
+  createFaq,
+  getAllFaq,
+  getSingleFaq,
+  updateFaq,
+  deleteFaq,
+};
