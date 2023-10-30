@@ -4,49 +4,58 @@ import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
 import pick from "../../shared/pick";
 import { paginationFields } from "../../constants/pagination";
-import { BlogService } from "./blog.service";
+import {
+  deleteBlogFromDB,
+  deleteFaqFromDB,
+  getAllBlogFromDB,
+  getAllFaqFromDB,
+  getSingleBlogService,
+  getSingleFaqService,
+  postBlogToDb,
+  postFAQToDb,
+  updateBFaqInDB,
+  updateBlogInDB,
+} from "./blog.service";
 
-// create blog
-const createBlog = catchAsync(async (req: Request, res: Response) => {
 
-  const result = await BlogService.createBlog(req.body);
+
+// create faq
+export const createFaq = catchAsync(async (req: Request, res: Response) => {
+  const result = await postFAQToDb(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "BLog created successfully",
+    message: "Faq created successfully",
     data: result,
   });
 });
 
-// get all blog
-const getAllBlog = catchAsync(
+// get all faq
+export const getAllFaqController = catchAsync(
   async (req: Request, res: Response) => {
-
     const options = pick(req.query, paginationFields);
-
-    const result = await BlogService.getAllBlog(options);
+    const result = await getAllFaqFromDB(options);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Blogs fetched successfully",
+      message: "Faqs fetched successfully",
       data: result,
     });
   }
 );
 
-// get single blog
-const getSingleBlog = catchAsync(
+// get single faq
+export const getSingleFaqController = catchAsync(
   async (req: Request, res: Response) => {
-
     const id = req.params.id;
-
-    const result = await BlogService.getSingleBlog(id);
+    console.log(id);
+    const result = await getSingleFaqService(id);
 
     if (!result) {
       return sendResponse(res, {
         statusCode: httpStatus.OK,
         success: false,
-        message: "Blog not found",
+        message: "Faq not found",
         data: "",
       });
     }
@@ -54,33 +63,33 @@ const getSingleBlog = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Blog Fetched successfully",
+      message: "Faq Fetched successfully",
       data: result,
     });
   }
 );
 
-// update blog 
-const updateBlog = catchAsync(
+// update faq 
+export const updateFaqController = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const payload = req.body;
-
+   
     try {
-      const result = await BlogService.updateBlog(id, payload);
+      const result = await updateBFaqInDB(id, payload);
 
       if (result) {
         sendResponse(res, {
           statusCode: httpStatus.OK,
           success: true,
-          message: "Blog updated successfully",
+          message: "Faq updated successfully",
           data: result,
         });
       } else {
         sendResponse(res, {
           statusCode: httpStatus.NOT_FOUND,
           success: false,
-          message: "Blog not found with the specified ID",
+          message: "Faq not found with the specified ID",
         });
       }
     } catch (error) {
@@ -88,35 +97,23 @@ const updateBlog = catchAsync(
       sendResponse(res, {
         statusCode: httpStatus.INTERNAL_SERVER_ERROR,
         success: false,
-        message: "Error while updating the service",
+        message: "Error while updating the Faq",
       });
     }
   }
 );
 
-// delete blog 
-const deleteBlog = catchAsync(
+// delete Faq
+export const deleteFaqController = catchAsync(
   async (req: Request, res: Response) => {
-    
     const id = req.params.id;
 
-    const result = await BlogService.deleteBlog(id);
+    const result = await deleteFaqFromDB(id);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Blog deleted successfully",
+      message: "Faq deleted successfully",
       data: result,
     });
   }
 );
-
-
-
-
-export const BlogController = {
-  createBlog,
-  getAllBlog,
-  getSingleBlog,
-  updateBlog,
-  deleteBlog
-}

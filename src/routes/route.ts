@@ -6,8 +6,8 @@ import { bookingRoutes } from "../module/booking/booking.route";
 import { cartServices } from "../module/myCart/myCart.route";
 import { feedbackRoutes } from "../module/feedback/feedback.route";
 import { serviceRoutes } from "../module/services/services.route";
-import { BlogAndFAQService } from "../module/blog/blog.route";
 import { authRoutes } from "../module/auth/auth.route";
+import { BlogRoutes } from "../module/blog/blog.route";
 
 const router = express.Router();
 
@@ -45,8 +45,8 @@ const moduleRoutes = [
     route: feedbackRoutes,
   },
   {
-    path: "/",
-    route: BlogAndFAQService,
+    path: "/blogs",
+    route: BlogRoutes,
   },
 ];
 

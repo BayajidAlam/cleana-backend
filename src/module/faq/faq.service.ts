@@ -1,24 +1,25 @@
+
 import { BlogPost, Faq } from "@prisma/client";
 import prisma from "../../shared/prisma";
 import { IPaginationOptions } from "../../constants/pagination";
 import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IGenericResponse } from "../../interface/common";
 
-// post blog
-const createBlog = async (data: BlogPost): Promise<BlogPost> => {
-  const result = prisma.blogPost.create({
+// post faq 
+export const postFAQToDb = async (data: Faq): Promise<Faq> => {
+  const result = prisma.faq.create({
     data,
   });
   return result;
 };
 
-// get all post
-const getAllBlog = async (
+// get all faq
+export const getAllFaqFromDB = async (
   options: IPaginationOptions
-): Promise<IGenericResponse<BlogPost[]>> => {
+): Promise<IGenericResponse<Faq[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
 
-  const result = await prisma.blogPost.findMany({
+  const result = await prisma.faq.findMany({
     take: limit,
     skip,
     orderBy: {
@@ -26,7 +27,7 @@ const getAllBlog = async (
     },
   });
 
-  const total: number = await prisma.blogPost.count();
+  const total: number = await prisma.faq.count();
 
   return {
     meta: {
@@ -38,12 +39,14 @@ const getAllBlog = async (
   };
 };
 
-// get single blog
-const getSingleBlog = async (id: string) => {
-  const service = await prisma.blogPost.findUnique({
+// get single service
+export const getSingleFaqService = async (id: string) => {
+
+  const service = await prisma.faq.findUnique({
     where: {
       id,
     },
+    
   });
 
   if (!service) {
@@ -53,9 +56,12 @@ const getSingleBlog = async (id: string) => {
   return service;
 };
 
-// update blog in db
-const updateBlog = async (id: string, payload: Partial<BlogPost>) => {
-  const result = await prisma.blogPost.update({
+// update faq in db
+export const updateBFaqInDB = async (
+  id: string,
+  payload: Partial<Faq>
+) => {
+  const result = await prisma.faq.update({
     where: {
       id,
     },
@@ -64,9 +70,9 @@ const updateBlog = async (id: string, payload: Partial<BlogPost>) => {
   return result;
 };
 
-// delete blog
-const deleteBlog = async (id: string) => {
-  const result = await prisma.blogPost.delete({
+// delete blog 
+export const deleteFaqFromDB = async (id: string) => {
+  const result = await prisma.faq.delete({
     where: {
       id,
     },
@@ -74,10 +80,3 @@ const deleteBlog = async (id: string) => {
   return result;
 };
 
-export const BlogService = {
-  createBlog,
-  getAllBlog,
-  getSingleBlog,
-  updateBlog,
-  deleteBlog,
-};
