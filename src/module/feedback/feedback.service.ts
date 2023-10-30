@@ -8,14 +8,7 @@ export const addFeedbackToDB = async (data: Feedback): Promise<Feedback> => {
   });
   return result;
 };
-export const addReviewToDB = async (
-  data: ReviewAndRating
-): Promise<ReviewAndRating> => {
-  const result = prisma.reviewAndRating.create({
-    data,
-  });
-  return result;
-};
+
 
 export const getAllFeedbackFromDB = async () => {
   const result = await prisma.feedback.findMany({
@@ -29,14 +22,3 @@ export const getAllFeedbackFromDB = async () => {
   return result;
 };
 
-export const getAllReviewFromDB = async () => {
-  const result = prisma.reviewAndRating.findMany({
-    include: {
-      service: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  return result;
-};

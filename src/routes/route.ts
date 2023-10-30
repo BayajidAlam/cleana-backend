@@ -1,7 +1,7 @@
 import express from "express";
 import { userRoutes } from "../module/user/user.route";
 import { categoryRoutes } from "../module/category/category.route";
-import { ratingRoutes } from "../module/rating/rating.route";
+import { ratingRoutes } from "../module/reviewAndRating/reviewAndRating.route";
 import { bookingRoutes } from "../module/booking/booking.route";
 import { cartServices } from "../module/myCart/myCart.route";
 import { feedbackRoutes } from "../module/feedback/feedback.route";
@@ -29,7 +29,7 @@ const moduleRoutes = [
     route: categoryRoutes,
   },
   {
-    path: "/",
+    path: "/reviews",
     route: ratingRoutes,
   },
   {
