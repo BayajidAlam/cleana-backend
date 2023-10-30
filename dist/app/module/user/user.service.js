@@ -79,28 +79,49 @@ const getAllUser = (filters, options) => __awaiter(void 0, void 0, void 0, funct
         data: result,
     };
 });
-const deleteSingleUserFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(id, "id");
-    const result = yield prisma_1.default.user.findUnique({
-        where: {
-            id: id,
-        },
-    });
-    if (result) {
-        const deleteResult = yield prisma_1.default.user.delete({
+const deleteSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield prisma_1.default.user.findUnique({
             where: {
-                id,
+                id: id,
             },
         });
-        return deleteResult;
+        if (!user) {
+            return { success: false, message: "User not found" };
+        }
+        yield prisma_1.default.$transaction([
+            prisma_1.default.feedback.deleteMany({
+                where: {
+                    userId: id,
+                },
+            }),
+            prisma_1.default.booking.deleteMany({
+                where: {
+                    userId: id,
+                },
+            }),
+            prisma_1.default.user.delete({
+                where: {
+                    id: id,
+                },
+            }),
+        ]);
+        return {
+            success: true,
+            message: "User and related feedback and booking records deleted successfully",
+        };
     }
-    else {
-        return null;
+    catch (error) {
+        console.error("Error deleting user:", error);
+        return {
+            success: false,
+            message: "An error occurred while deleting the user and related records",
+        };
     }
 });
 exports.UserService = {
     getAllUser,
     getSingleUser,
     updateUserRole,
-    deleteSingleUserFromDb
+    deleteSingleUser,
 };

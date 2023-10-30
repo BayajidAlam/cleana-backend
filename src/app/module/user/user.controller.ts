@@ -59,8 +59,8 @@ const updateRoledUser: RequestHandler = catchAsync(
 const deleteSingleUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
-      console.log(id,'id cnt');
-    const result = await UserService.deleteSingleUserFromDb(id);
+
+    const result = await UserService.deleteSingleUser(id);
     if (result) {
       return sendResponse(res, {
         statusCode: httpStatus.OK,

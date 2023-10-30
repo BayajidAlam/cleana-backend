@@ -4,7 +4,6 @@ import prisma from "../../../shared/prisma";
 import { IPaginationOptions } from "../../../constants/pagination";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 
-
 const getSingleUser = async (id: any) => {
   const result = await prisma.user.findUnique({
     where: {
@@ -22,20 +21,16 @@ const updateUserRole = async (id: any, payload: object) => {
   return result;
 };
 
-const getAllUser = async (
-  filters: any,
-  options: IPaginationOptions
-) => {
+const getAllUser = async (filters: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
   console.log(searchTerm);
   const andConditons = [];
 
-  
   if (searchTerm && userFilterAbleField.includes(searchTerm.toLowerCase())) {
     andConditons.push({
       [searchTerm.toLowerCase()]: {
-        equals: true, 
+        equals: true,
       },
     });
   }
@@ -71,30 +66,53 @@ const getAllUser = async (
   };
 };
 
-const deleteSingleUserFromDb = async (id: string) => {
-  console.log(id, "id");
-  const result = await prisma.user.findUnique({
-    where: {
-      id: id,
-    },
-  });
-
-  if (result) {
-    const deleteResult = await prisma.user.delete({
+const deleteSingleUser = async (id: string) => {
+  try {
+    const user = await prisma.user.findUnique({
       where: {
-        id,
+        id: id,
       },
     });
-    return deleteResult;
-  } else {
-    return null;
+
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+
+    await prisma.$transaction([
+      prisma.feedback.deleteMany({
+        where: {
+          userId: id,
+        },
+      }),
+      prisma.booking.deleteMany({
+        where: {
+          userId: id,
+        },
+      }),
+      prisma.user.delete({
+        where: {
+          id: id,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
+      message: "User and related feedback and booking records deleted successfully",
+    };
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return  {
+      success: false,
+      message:
+        "An error occurred while deleting the user and related records",
+    };
   }
 };
-
 
 export const UserService = {
   getAllUser,
   getSingleUser,
   updateUserRole,
-  deleteSingleUserFromDb
+  deleteSingleUser,
 };

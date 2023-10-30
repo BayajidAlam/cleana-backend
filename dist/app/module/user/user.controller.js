@@ -53,8 +53,7 @@ const updateRoledUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
 }));
 const deleteSingleUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    console.log(id, 'id cnt');
-    const result = yield user_service_1.UserService.deleteSingleUserFromDb(id);
+    const result = yield user_service_1.UserService.deleteSingleUser(id);
     if (result) {
         return (0, sendResponse_1.default)(res, {
             statusCode: http_status_1.default.OK,
