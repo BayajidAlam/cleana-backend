@@ -25,7 +25,7 @@ const moduleRoutes = [
     route: serviceRoutes,
   },
   {
-    path: "/",
+    path: "/categories",
     route: categoryRoutes,
   },
   {

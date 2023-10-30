@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
-import { addCategoryToDB } from "../category/category.service";
 import httpStatus from "http-status";
 import sendResponse from "../../shared/sendResponse";
 import {
