@@ -121,12 +121,13 @@ export const getAllUsersFromDB = async (
 };
 
 export const deleteSingleUserFromDb = async (id: string) => {
+  console.log(id, "id");
   const result = await prisma.user.findUnique({
     where: {
       id: id,
     },
   });
-  
+
   if (result) {
     const deleteResult = await prisma.user.delete({
       where: {
