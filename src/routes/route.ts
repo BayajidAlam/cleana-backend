@@ -21,7 +21,7 @@ const moduleRoutes = [
     route: authRoutes,
   },
   {
-    path: "/",
+    path: "/services",
     route: serviceRoutes,
   },
   {

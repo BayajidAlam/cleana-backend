@@ -8,14 +8,15 @@ import { IPaginationOptions } from "../../constants/pagination";
 import { IGenericResponse } from "../../interface/common";
 import { paginationHelpers } from "../../helpers/paginationHelper";
 
-export const addServiceToDB = async (data: Services): Promise<Services> => {
+const addService = async (data: Services): Promise<Services> => {
+
   const result = prisma.services.create({
     data,
   });
   return result;
 };
 
-export const getAllServiceFromDBService = async (
+const getAllService = async (
   filters: IservicesFilterableFieldsProps,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Services[]>> => {
@@ -105,7 +106,8 @@ export const getAllServiceFromDBService = async (
   }
 };
 
-export const getAllNewServiceFromDB = async () => {
+const getAllNewService = async () => {
+
   const result = await prisma.services.findMany({
     include: {
       category: true,
@@ -117,7 +119,8 @@ export const getAllNewServiceFromDB = async () => {
   return result;
 };
 
-export const getSingleServiceByCategoryIDFromDB = async (id: string) => {
+const getSingleServiceByCategoryID = async (id: string) => {
+
   const result = await prisma.services.findMany({
     where: {
       categoryId: id,
@@ -126,10 +129,11 @@ export const getSingleServiceByCategoryIDFromDB = async (id: string) => {
   return result;
 };
 
-export const updateServiceFromDB = async (
+const updateService = async (
   id: string,
   payload: Partial<Services>
 ) => {
+
   const result = await prisma.services.update({
     where: {
       id,
@@ -142,7 +146,8 @@ export const updateServiceFromDB = async (
   return result;
 };
 
-export const deleteServiceFromDB = async (id: string) => {
+const deleteService = async (id: string) => {
+
   const deleteReview = await prisma.reviewAndRating.deleteMany({
     where: {
       servicesId: id,
@@ -154,6 +159,7 @@ export const deleteServiceFromDB = async (id: string) => {
       servicesId: id,
     },
   });
+
   if (!!deleteReview || !!deleteBooking) {
     const result = await prisma.services.delete({
       where: {
@@ -163,8 +169,8 @@ export const deleteServiceFromDB = async (id: string) => {
     return result;
   }
 };
-export const getSingleServiceService = async (id: string) => {
-  // Use Prisma's findUnique to retrieve a service by its id
+const getSingleService = async (id: string) => {
+
   const service = await prisma.services.findUnique({
     where: {
       id,
@@ -175,6 +181,17 @@ export const getSingleServiceService = async (id: string) => {
     return null;
   }
 
-  // If the service exists, you can return it or perform any other actions
+
   return service;
+};
+
+
+export const Service = {
+  addService,
+  getAllService,
+  getAllNewService ,
+  getSingleServiceByCategoryID,
+  updateService,
+  deleteService,
+  getSingleService
 };

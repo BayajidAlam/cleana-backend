@@ -1,27 +1,15 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
-import { decodedToken } from "../../helpers/jwtHelpers";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
-import {
-  addServiceToDB,
-  deleteServiceFromDB,
-  getAllNewServiceFromDB,
-  getAllServiceFromDBService,
-  getSingleServiceByCategoryIDFromDB,
-  getSingleServiceService,
-  updateServiceFromDB,
-} from "./services.service";
 import pick from "../../shared/pick";
 import { servicesFilterableFields } from "./services.constant";
 import { paginationFields } from "../../constants/pagination";
+import { Service } from "./services.service";
 
-export const postService = catchAsync(async (req: Request, res: Response) => {
-  // const decodedToken = (token: string) => {
-  //   return jwtDecode(token);
-  // };
-  //   const userinfo = decodedToken(req.headers.authorization as string);
-  const result = await addServiceToDB(req.body);
+const postService = catchAsync(async (req: Request, res: Response) => {
+
+  const result = await Service.addService(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -31,12 +19,13 @@ export const postService = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-export const getAllServiceController = catchAsync(
+const getAllService = catchAsync(
   async (req: Request, res: Response) => {
     
     const filters = pick(req.query, servicesFilterableFields);
     const options = pick(req.query, paginationFields);
-    const result = await getAllServiceFromDBService(filters, options);
+
+    const result = await Service.getAllService(filters, options);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -47,11 +36,10 @@ export const getAllServiceController = catchAsync(
   }
 );
 
-export const getAllNewServiceController = catchAsync(
+const getAllNewService = catchAsync(
   async (req: Request, res: Response) => {
 
-    const result = await getAllNewServiceFromDB();
-
+    const result = await Service.getAllNewService();
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -61,12 +49,11 @@ export const getAllNewServiceController = catchAsync(
   }
 );
 
-export const getServiceByCategoryIdController = catchAsync(
+const getServiceByCategoryId = catchAsync(
   async (req: Request, res: Response) => {
     const categoryId = req.params.categoryId;
  
-   
-    const result = await getSingleServiceByCategoryIDFromDB(categoryId);
+    const result = await Service.getSingleServiceByCategoryID(categoryId);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -76,12 +63,12 @@ export const getServiceByCategoryIdController = catchAsync(
   }
 );
 
-export const updateServiceController = catchAsync(async (req: Request, res: Response) => {
+const updateService = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const payload = req.body;
 
   try {
-    const result = await updateServiceFromDB(id, payload);
+    const result = await Service.updateService(id, payload);
 
     if (result) {
       sendResponse(res, {
@@ -98,7 +85,6 @@ export const updateServiceController = catchAsync(async (req: Request, res: Resp
       });
     }
   } catch (error) {
-    // Handle any other errors that might occur during the update
     sendResponse(res, {
       statusCode: httpStatus.INTERNAL_SERVER_ERROR,
       success: false,
@@ -108,11 +94,11 @@ export const updateServiceController = catchAsync(async (req: Request, res: Resp
 });
 ;
 
-export const deleteServiceController = catchAsync(
+const deleteService = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
    
-    const result = await deleteServiceFromDB(id);
+    const result = await Service.deleteService(id);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -122,16 +108,28 @@ export const deleteServiceController = catchAsync(
   }
 );
 
-export const getSingleServiceController = catchAsync(
+const getSingleService = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     console.log(id);
-    const result = await getSingleServiceService(id);
+    const result = await Service.getSingleService(id);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Service deleted successfully",
+      message: "Service retrive successfully",
       data: result,
     });
   }
 );
+
+
+
+export const ServiceController = {
+  postService,
+  getAllService,
+  getAllNewService,
+  getServiceByCategoryId,
+  updateService,
+  deleteService,
+  getSingleService
+}

@@ -1,11 +1,14 @@
 import express from "express";
-import {postService, getAllServiceController, getServiceByCategoryIdController, updateServiceController, deleteServiceController, getSingleServiceController, getAllNewServiceController} from './services.controller';
+import { ServiceController } from "./services.controller";
+
 const router = express.Router();
-router.post("/create-service", postService);
-router.get("/services", getAllServiceController);
-router.get("/new-services", getAllNewServiceController);
-router.patch("/services/:id", updateServiceController);
-router.get("/services/:id", getSingleServiceController);
-router.delete("/services/:id", deleteServiceController);
-router.get("/services/:categoryId", getServiceByCategoryIdController);
+
+router.post("/create-service", ServiceController.postService);
+router.get("/", ServiceController.getAllService);
+router.get("/new-services", ServiceController.getAllNewService);
+router.patch("/:id", ServiceController.updateService);
+router.get("/:id", ServiceController.getSingleService);
+router.delete("/:id", ServiceController.deleteService);
+router.get("/:categoryId", ServiceController.getServiceByCategoryId);
+
 export const serviceRoutes = router;

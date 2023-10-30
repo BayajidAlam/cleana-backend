@@ -16,10 +16,6 @@ import {
   updateBFaqInDB,
   updateBlogInDB,
 } from "./blog.service";
-import {
-  getSingleServiceByCategoryIDFromDB,
-  updateServiceFromDB,
-} from "../services/services.service";
 
 // create blog
 export const createBlog = catchAsync(async (req: Request, res: Response) => {
