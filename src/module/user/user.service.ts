@@ -1,54 +1,11 @@
-import { Prisma, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import prisma from "../../shared/prisma";
-import httpStatus from "http-status";
-import { createToken } from "../../helpers/jwtHelpers";
-import { Secret } from "jsonwebtoken";
-import config from "../../config";
 import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IPaginationOptions } from "../../constants/pagination";
 import { userFilterAbleField } from "./user.constant";
 
-export const signUpUserTODB = async (data: User): Promise<User> => {
-  const result = await prisma.user.create({
-    data: data,
-  });
-  return result;
-};
 
-export const loginUserToDB = async (payload: User) => {
-  const { email, password } = payload;
-
-  const isUserExist = await prisma.user.findFirstOrThrow({
-    where: {
-      email: email,
-      password: password,
-    },
-  });
-
-  if (!isUserExist) {
-    httpStatus.NOT_FOUND, "User does not exist";
-  } else {
-    const { id: userId, role } = isUserExist;
-    const accessToken: any | undefined = createToken(
-      { userId, role },
-      config.jwt.access_secret as Secret,
-      config.jwt.access_expires_in as string
-    );
-
-    const refreshToken: any | undefined = createToken(
-      { userId, role },
-      config.jwt.refresh_secret as Secret,
-      config.jwt.refresh_expires_in as string
-    );
-
-    return {
-      accessToken,
-      refreshToken,
-    };
-  }
-};
-
-export const getSingleUserById = async (id: any) => {
+const getSingleUser = async (id: any) => {
   const result = await prisma.user.findUnique({
     where: {
       id: id,
@@ -57,7 +14,7 @@ export const getSingleUserById = async (id: any) => {
   return result;
 };
 
-export const updateUserRole = async (id: any, payload: object) => {
+const updateUserRole = async (id: any, payload: object) => {
   const result = await prisma.user.update({
     where: { id },
     data: payload,
@@ -65,7 +22,7 @@ export const updateUserRole = async (id: any, payload: object) => {
   return result;
 };
 
-export const getAllUsersFromDB = async (
+const getAllUser = async (
   filters: any,
   options: IPaginationOptions
 ) => {
@@ -74,11 +31,11 @@ export const getAllUsersFromDB = async (
   console.log(searchTerm);
   const andConditons = [];
 
-  // Check if searchTerm is for role filtering
+  
   if (searchTerm && userFilterAbleField.includes(searchTerm.toLowerCase())) {
     andConditons.push({
       [searchTerm.toLowerCase()]: {
-        equals: true, // You can modify this based on your Prisma schema
+        equals: true, 
       },
     });
   }
@@ -92,12 +49,6 @@ export const getAllUsersFromDB = async (
       })),
     });
   }
-
-  /**
-   * person = { name: 'fahim' }
-   * name = person[name]
-   *
-   */
 
   const whereConditons: Prisma.UserWhereInput =
     andConditons.length > 0 ? { AND: andConditons } : {};
@@ -120,7 +71,7 @@ export const getAllUsersFromDB = async (
   };
 };
 
-export const deleteSingleUserFromDb = async (id: string) => {
+const deleteSingleUserFromDb = async (id: string) => {
   console.log(id, "id");
   const result = await prisma.user.findUnique({
     where: {
@@ -138,4 +89,12 @@ export const deleteSingleUserFromDb = async (id: string) => {
   } else {
     return null;
   }
+};
+
+
+export const UserService = {
+  getAllUser,
+  getSingleUser,
+  updateUserRole,
+  deleteSingleUserFromDb
 };

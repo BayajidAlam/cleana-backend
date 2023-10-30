@@ -2,14 +2,9 @@ import { Request, RequestHandler, Response } from "express";
 import httpStatus from "http-status";
 import sendResponse from "../../shared/sendResponse";
 import catchAsync from "../../shared/catchAsync";
-import {
-  deleteSingleUserFromDb,
-  getAllUsersFromDB,
-  getSingleUserById,
-  updateUserRole,
-} from "./user.service";
 import pick from "../../shared/pick";
 import { userFilterAbleField } from "./user.constant";
+import { UserService } from "./user.service";
 
 
 
@@ -19,7 +14,7 @@ const getAllUsers: RequestHandler = catchAsync(
 
     const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
 
-    const result = await getAllUsersFromDB(filters, options);
+    const result = await UserService.getAllUser(filters, options);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -34,7 +29,7 @@ const getSingleUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
 
-    const result = await getSingleUserById(id);
+    const result = await UserService.getSingleUser(id);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -50,7 +45,7 @@ const updateRoledUser: RequestHandler = catchAsync(
     const id = req.params.id;
     const data = req.body;
 
-    const result = await updateUserRole(id, data);
+    const result = await UserService.updateUserRole(id, data);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -65,7 +60,7 @@ const deleteSingleUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
       console.log(id,'id cnt');
-    const result = await deleteSingleUserFromDb(id);
+    const result = await UserService.deleteSingleUserFromDb(id);
     if (result) {
       return sendResponse(res, {
         statusCode: httpStatus.OK,
