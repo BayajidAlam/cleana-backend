@@ -1,7 +1,8 @@
 import { MyCart } from "@prisma/client";
 import prisma from "../../shared/prisma";
 
-export const addCartToDB = async (data: MyCart): Promise<MyCart> => {
+const addToCart = async (data: MyCart): Promise<MyCart> => {
+
   const result = prisma.myCart.create({
     data,
     include: {
@@ -12,7 +13,7 @@ export const addCartToDB = async (data: MyCart): Promise<MyCart> => {
   return result;
 };
 
-export const getMyCartByUserIdFromDB = async (id: string) => {
+const getMyCartByUserId = async (id: string) => {
   
   const result = await prisma.myCart.findMany({
     where: {
@@ -30,14 +31,14 @@ export const getMyCartByUserIdFromDB = async (id: string) => {
   return result;
 };
 
-export const deleteCartFromDB = async (id: string) => {
-  console.log(id);
+const deleteCart = async (id: string) => {
+  
   const cartItem = await prisma.myCart.findUnique({
     where: {
       id,
     },
   });
-  console.log(cartItem);
+
   if (!cartItem) {
     throw new Error("CartItem not found with the specified ID");
   }
@@ -48,4 +49,11 @@ export const deleteCartFromDB = async (id: string) => {
     },
   });
   return result;
+};
+
+
+export const MyCartService = {
+  addToCart,
+  deleteCart,
+  getMyCartByUserId
 };

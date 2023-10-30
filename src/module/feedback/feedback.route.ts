@@ -1,12 +1,9 @@
 import express from "express";
-import {
-  addFeedbackController,
-  getAllFeedbackController,
-} from "./feedback.controller";
+import { FeedbackController } from "./feedback.controller";
 
 const router = express.Router();
 
-router.post("/my-feedback", addFeedbackController);
-router.get("/all-feedbacks", getAllFeedbackController);
+router.post("/my-feedback", FeedbackController.addFeedback);
+router.get("/", FeedbackController.getAllFeedback);
 
 export const feedbackRoutes = router;

@@ -2,46 +2,45 @@ import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
-import { addCartToDB, deleteCartFromDB, getMyCartByUserIdFromDB } from "./myCart.service";
+import { MyCartService } from "./myCart.service";
 
-export const addTOCartController = catchAsync(
-  async (req: Request, res: Response) => {
-    const result = await addCartToDB(req.body);
-    console.log(req.body);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: "Product added to cart",
-      data: result,
-    });
-  }
-);
+const addToCart = catchAsync(async (req: Request, res: Response) => {
+  const result = await MyCartService.addToCart(req.body);
 
-export const getMyCartByUserIdController = catchAsync(
-  async (req: Request, res: Response) => {
-    const userId = req.params.userId;
- 
-    const result = await getMyCartByUserIdFromDB(userId);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: "User Cart Services fetched successfully",
-      data: result,
-    });
-  }
-);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Product added to cart",
+    data: result,
+  });
+});
 
+const getMyCartByUserId = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.params.userId;
 
-export const deleteItemFromCart = catchAsync(
-  async (req: Request, res: Response) => {
-    const id = req.params.id;
-    
-    const result = await deleteCartFromDB(id);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: "Cart deleted successfully",
-      data: result,
-    });
-  }
-);
+  const result = await MyCartService.getMyCartByUserId(userId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User Cart Services fetched successfully",
+    data: result,
+  });
+});
+
+const deleteItemFromCart = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await MyCartService.deleteCart(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Cart deleted successfully",
+    data: result,
+  });
+});
+
+export const MyCartController = {
+  addToCart,
+  getMyCartByUserId,
+  deleteItemFromCart,
+};

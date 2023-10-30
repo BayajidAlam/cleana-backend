@@ -37,11 +37,11 @@ const moduleRoutes = [
     route: bookingRoutes,
   },
   {
-    path: "/",
+    path: "/myCart",
     route: cartServices,
   },
   {
-    path: "/",
+    path: "/feedbacks",
     route: feedbackRoutes,
   },
   {
