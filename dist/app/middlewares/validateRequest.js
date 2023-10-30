@@ -8,19 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const route_1 = __importDefault(require("./app/routes/route"));
-const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use("/api/v1", route_1.default);
-app.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("Welcome to My server!");
-}));
-exports.default = app;
+const validateRequest = (schema) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield schema.parseAsync({
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            cookies: req.cookies,
+        });
+        return next();
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.default = validateRequest;
