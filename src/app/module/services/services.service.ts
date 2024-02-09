@@ -120,7 +120,7 @@ const getAllNewService = async () => {
 };
 
 const getSingleServiceByCategoryID = async (id: string) => {
-
+  
   const result = await prisma.services.findMany({
     where: {
       categoryId: id,

@@ -52,7 +52,7 @@ const getAllNewService = catchAsync(
 const getServiceByCategoryId = catchAsync(
   async (req: Request, res: Response) => {
     const categoryId = req.params.categoryId;
- 
+  
     const result = await Service.getSingleServiceByCategoryID(categoryId);
     sendResponse(res, {
       statusCode: httpStatus.OK,
